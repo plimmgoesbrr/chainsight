@@ -1,46 +1,18 @@
 # ChainSight — Explainable Bitcoin Transaction Intelligence
 
-**Team Neutralyze · SIH26146 (NTRO) · AI-Powered Monitoring & Analysis of Bitcoin Transaction Traffic**
+**Follow the money. Explain the flag.**
 
-ChainSight is a fully offline investigator tool. It reads bulk Bitcoin transaction + network
-metadata (CSV / JSON / XML), links IP addresses to transactions and wallets, groups wallets by
-likely owner, scores every wallet's risk from 0–100 with AI + graph analysis, and explains every
-flag in plain English — no LLM, no internet, every number traceable.
+An offline investigator tool for Bitcoin forensics. ChainSight reads bulk transaction and network metadata (CSV / JSON / XML), links IP addresses to transactions and wallets, groups wallets by likely owner, scores every wallet's risk from 0–100 with machine learning and graph analysis, and explains every flag in plain English — no LLM, no internet, every number traceable.
 
----
+Built for **Smart India Hackathon 2026** (problem statement SIH26146, AI-Powered Monitoring & Analysis of Bitcoin Transaction Traffic) by Karthik K, Team Neutralyze.
 
-## Quick start (Windows)
+## At a glance
 
-1. Install **Python 3.11 or 3.12** from <https://www.python.org/downloads/>
-   and tick **"Add python.exe to PATH"** on the first installer screen.
-2. Unzip this folder anywhere (e.g. `Desktop\ChainSight`).
-3. Double-click **`setup.bat`** — one time only, needs internet for ~2 minutes to install packages.
-4. Double-click **`run.bat`** — the dashboard opens at <http://127.0.0.1:8000>.
-   Keep the black window open while you use it. After setup, **no internet is needed**.
-
-macOS / Linux: `./setup.sh` then `./run.sh`.
-
-Manual commands (any OS), from inside the folder:
-
-```
-python -m venv .venv
-.venv\Scripts\python -m pip install -r requirements.txt      (macOS/Linux: .venv/bin/python ...)
-.venv\Scripts\python -m chainsight.cli prepare
-.venv\Scripts\python -m chainsight.cli serve
-```
-
----
-
-## Demo flow (matches the video script)
-
-1. **Wi-Fi off.** Everything runs locally.
-2. **Data** tab → pick `case_dataset.csv` (or the JSON / XML samples, or *Upload file…*) →
-   **Run analysis**. Watch the 9 pipeline stages tick through (~5 s).
-3. **Overview** → transactions analysed, owner groups, IP links, daily activity, detection quality.
-4. **Alerts** → every flagged wallet ranked by risk.
-5. Click the top alert → **Investigate**: risk gauge, the four score components, the money-trail
-   graph (with the origin IP), the score breakdown, and the plain-English reasons.
-6. Click any transaction or neighbouring wallet to keep following the money.
+- **9-stage pipeline:** ingest → geo-enrich → IP linking → owner grouping → 19 wallet features → detection → scoring → explanation → storage
+- **Hybrid risk score:** XGBoost (known patterns) + Isolation Forest (unusual behaviour) + personalised PageRank from flagged wallets (follow the money) + laundering-pattern detectors (peeling chains, fan-out, fan-in, mixing)
+- **Explainable:** TreeSHAP attributions turned into checkable sentences, e.g. *"90/100 HIGH — 2 hops from a flagged wallet; part of a 9-hop peeling chain; funds moved on within minutes."*
+- **Results on a held-out dataset:** 30/30 laundering cases caught, PR-AUC 0.98, 100% precision in the top 50 alerts, <1% false alarms, ~5–7 s per run on a laptop
+- **Stack:** Python, XGBoost, scikit-learn, NetworkX, DuckDB, FastAPI, Cytoscape.js, Chart.js — fully offline
 
 ---
 
@@ -82,6 +54,45 @@ IP links and owner groups are **evidence with a confidence level, never proof of
 
 ---
 
+## Quick start (Windows)
+
+1. Install **Python 3.11 or 3.12** from <https://www.python.org/downloads/>
+   and tick **"Add python.exe to PATH"** on the first installer screen.
+2. Unzip this folder anywhere (e.g. `Desktop\ChainSight`).
+3. Double-click **`setup.bat`** — one time only, needs internet for ~2 minutes to install packages.
+4. Double-click **`run.bat`** — the dashboard opens at <http://127.0.0.1:8000>.
+   Keep the black window open while you use it. After setup, **no internet is needed**.
+
+macOS / Linux: open Terminal in the folder, run `bash setup.sh` once, then `bash run.sh`.
+
+Manual commands (any OS), from inside the folder:
+
+```
+python -m venv .venv
+.venv\Scripts\python -m pip install -r requirements.txt      (macOS/Linux: .venv/bin/python ...)
+.venv\Scripts\python -m chainsight.cli prepare
+.venv\Scripts\python -m chainsight.cli serve
+```
+
+---
+
+## Demo walkthrough
+
+1. **Wi-Fi off.** Everything runs locally.
+2. **Data** tab → pick `case_dataset.csv` (or the JSON / XML samples, or *Upload file…*) →
+   **Run analysis**. Watch the 9 pipeline stages tick through (~5 s).
+3. **Overview** → transactions analysed, owner groups, IP links, daily activity, detection quality.
+4. **Alerts** → every flagged wallet ranked by risk.
+5. Click the top alert → **Investigate**: risk gauge, the four score components, the money-trail
+   graph (with the origin IP), the score breakdown, and the plain-English reasons.
+6. Click any transaction or neighbouring wallet to keep following the money.
+
+**A good wallet to try:** type `bc1qt4h6` in the search box and press Enter →
+score 90 (HIGH): 2 hops downstream of a known flagged wallet, part of a 9-hop peeling chain,
+funds moved on within minutes, broadcast from a US hosting / VPN IP (dashed cyan link in the graph).
+
+---
+
 ## API (FastAPI, http://127.0.0.1:8000)
 
 `/api/summary` · `/api/alerts` · `/api/wallets` · `/api/wallet/{address}` · `/api/risk/{address}` ·
@@ -111,4 +122,12 @@ Regenerate everything from scratch: `python -m chainsight.cli prepare --force`
   commands above in a terminal.
 - **pip install fails** — you need internet once for setup. On a college network/proxy, try a phone hotspot.
 - **Port 8000 busy** — ChainSight picks the next free port automatically; use the address printed in the window.
+- **Mac: error mentioning `libomp.dylib`** — XGBoost needs Apple's OpenMP library: install Homebrew (brew.sh), run `brew install libomp`, then `bash run.sh` again.
+- **Windows: error mentioning `vcomp140.dll`** — install the free *Microsoft Visual C++ Redistributable (x64)* from Microsoft's website, then run run.bat again.
+- **Mac: Homebrew not installed** — paste the install command from brew.sh, then run the two "Next steps" commands it prints, then `brew install libomp`.
+- **Mac: "permission denied" on setup.sh** — run it as `bash setup.sh` instead of `./setup.sh`.
 - **Browser didn't open** — open <http://127.0.0.1:8000> yourself.
+
+## Author
+
+Karthik K — B.Tech CSE, Mahindra University · [GitHub](https://github.com/plimmgoesbrr)

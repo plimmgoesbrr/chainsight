@@ -542,7 +542,7 @@ def explain(scores, f, contribs, patterns, hops, nearest, seeds_set, weights):
         a_pts = weights["A"] * r.A * 100
         if a_pts >= 0.5:
             fr.append({"factor": "Unusual behaviour", "points": round(a_pts, 1), "component": "A",
-                       "sentence": f"Its overall behaviour is more unusual than {int(r.A * 100)}% of wallets in this dataset."})
+                       "sentence": f"Its overall behaviour is more unusual than {min(99, int(r.A * 100))}% of wallets in this dataset."})
         g_pts = weights["G"] * r.G * 100
         if g_pts >= 0.5:
             if a in seeds_set:
@@ -570,7 +570,7 @@ def explain(scores, f, contribs, patterns, hops, nearest, seeds_set, weights):
             if s and x["points"] >= 2 and s not in used:
                 sents.append(s)
                 used.add(s)
-            if len(sents) == 4:
+            if len(sents) == 5:
                 break
         reasons[a] = sents
     return factors, reasons
