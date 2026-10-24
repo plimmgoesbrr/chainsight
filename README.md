@@ -4,7 +4,7 @@
 
 An offline investigator tool for Bitcoin forensics. ChainSight reads bulk transaction and network metadata (CSV / JSON / XML), links IP addresses to transactions and wallets, groups wallets by likely owner, scores every wallet's risk from 0–100 with machine learning and graph analysis, and explains every flag in plain English — no LLM, no internet, every number traceable.
 
-Built for **Smart India Hackathon 2026** (problem statement SIH26146, AI-Powered Monitoring & Analysis of Bitcoin Transaction Traffic) by Karthik K, Team Neutralyze.
+Built for **Smart India Hackathon 2026** (problem statement SIH26146, AI-Powered Monitoring & Analysis of Bitcoin Transaction Traffic) 
 
 ## At a glance
 
@@ -128,6 +128,4 @@ Regenerate everything from scratch: `python -m chainsight.cli prepare --force`
 - **Mac: "permission denied" on setup.sh** — run it as `bash setup.sh` instead of `./setup.sh`.
 - **Browser didn't open** — open <http://127.0.0.1:8000> yourself.
 
-## Author
 
-Karthik K — B.Tech CSE, Mahindra University · [GitHub](https://github.com/plimmgoesbrr)
