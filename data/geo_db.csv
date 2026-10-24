@@ -1,0 +1,19 @@
+prefix,country,asn,asn_type
+49.36,IN,AS45609 Bharti Airtel,residential
+117.96,IN,AS9829 BSNL,residential
+106.51,IN,AS24560 Airtel Broadband,residential
+157.32,IN,AS55836 Reliance Jio,mobile
+103.21,IN,AS17488 Hathway,residential
+81.2,GB,AS2856 BT,residential
+73.15,US,AS7922 Comcast,residential
+92.40,DE,AS3320 Deutsche Telekom,residential
+110.33,SG,AS9506 Singtel,residential
+185.220,DE,AS208294 Hosting-VPN,hosting
+45.153,NL,AS206264 Amarutu Hosting,hosting
+194.26,RU,AS48282 Hosting-VDS,hosting
+91.219,RO,AS9009 M247 Hosting,hosting
+104.244,US,AS53667 FranTech Hosting,hosting
+5.255,SC,AS213035 Offshore Hosting,hosting
+88.99,FI,AS24940 Hetzner,datacenter
+51.15,FR,AS16276 OVH,datacenter
+34.89,US,AS15169 Google Cloud,datacenter

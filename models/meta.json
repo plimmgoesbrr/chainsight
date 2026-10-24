@@ -1,0 +1,39 @@
+{
+  "weights": {
+    "P": 0.5,
+    "A": 0.1,
+    "G": 0.3,
+    "T": 0.1
+  },
+  "bands": {
+    "high": 50.0,
+    "medium": 30.0
+  },
+  "features": [
+    "n_recv",
+    "n_sent",
+    "total_recv",
+    "total_sent",
+    "fast_out_share",
+    "median_hold_min",
+    "max_fan_out",
+    "n_senders",
+    "n_receivers",
+    "tx_per_day",
+    "mean_gap_hours",
+    "life_span_hours",
+    "avg_fee_rate",
+    "pagerank",
+    "cluster_size",
+    "n_countries",
+    "hosting_share",
+    "coinjoin_count",
+    "max_fan_in_48h"
+  ],
+  "training": {
+    "wallets": 11876,
+    "illicit": 998,
+    "oof_pr_auc_model": 0.996,
+    "oof_pr_auc_combined": 0.998
+  }
+}
